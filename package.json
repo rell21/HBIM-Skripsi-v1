@@ -17,6 +17,7 @@
     "autodesk-forge-tools": "^0.0.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "express-formidable": "^1.2.0"
+    "express-formidable": "^1.2.0",
+    "multer": "^1.4.5-lts.1"
   }
 }
