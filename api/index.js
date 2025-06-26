@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs'); // Kita butuh 'fs' untuk membuat direktori
 const { AuthClient, DerivativesApi, BucketsApi, ObjectsApi } = require('aps-sdk-node');
 
 try {
@@ -12,39 +13,37 @@ try {
         client_secret: process.env.APS_CLIENT_SECRET,
         bucket: process.env.APS_BUCKET ? process.env.APS_BUCKET.toLowerCase() : undefined
     };
-    
-    // Verifikasi bahwa variabel ada
-    console.log('APS_CLIENT_ID is present:', !!config.client_id);
-    console.log('APS_BUCKET is present:', !!config.bucket);
+
     if (!config.client_id || !config.client_secret || !config.bucket) {
-        throw new Error('FATAL ERROR: Environment variables are missing. Please check APS_CLIENT_ID, APS_CLIENT_SECRET, and APS_BUCKET in your Vercel project settings.');
+        throw new Error('FATAL ERROR: Environment variables are missing.');
     }
 
     // --- Inisialisasi Klien APS ---
-    console.log('Initializing APS SDK clients...');
     const auth = new AuthClient(config.client_id, config.client_secret);
     const derivatives = new DerivativesApi(auth);
     const buckets = new BucketsApi(auth);
     const objects = new ObjectsApi(auth);
-    console.log('APS SDK clients initialized successfully.');
 
     // --- Setup Express App ---
     const app = express();
     app.use(express.json());
     app.use(express.static(path.join(__dirname, '..', 'www')));
-    const upload = multer({ dest: 'uploads/' });
+
+    // =================================================================
+    // INI ADALAH PERBAIKAN KRUSIAL UNTUK VERCEL
+    // =================================================================
+    const UPLOAD_DIR = '/tmp/uploads';
+    if (!fs.existsSync(UPLOAD_DIR)) {
+        fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+    }
+    const upload = multer({ dest: UPLOAD_DIR });
+    // =================================================================
 
     // --- Routes ---
     app.get('/api/auth/token', async (req, res, next) => {
-        console.log('Request received for /api/auth/token');
         try {
-            const token = await auth.getPublicToken(['viewables:read']);
-            console.log('Successfully generated public token.');
-            res.json(token);
-        } catch (err) {
-            console.error('Error in /api/auth/token:', err);
-            next(err);
-        }
+            res.json(await auth.getPublicToken(['viewables:read']));
+        } catch (err) { next(err); }
     });
 
     app.get('/api/models', async (req, res, next) => {
@@ -70,7 +69,6 @@ try {
         } catch (err) {
             next(err);
         } finally {
-            const fs = require('fs');
             if (fs.existsSync(file.path)) fs.unlinkSync(file.path);
         }
     });
@@ -103,11 +101,8 @@ try {
     module.exports = app;
 
 } catch (err) {
-    // Menangkap error saat inisialisasi awal
-    console.error('!!! CRITICAL INITIALIZATION ERROR !!!');
-    console.error(err.message);
-    // Ekspor aplikasi dummy agar Vercel tidak crash saat build
+    console.error('!!! CRITICAL INITIALIZATION ERROR !!!', err);
     const dummyApp = express();
-    dummyApp.get('*', (req, res) => res.status(500).send('Server failed to initialize. Check Vercel logs for "CRITICAL INITIALIZATION ERROR".'));
+    dummyApp.get('*', (req, res) => res.status(500).send(`Server failed to initialize: ${err.message}`));
     module.exports = dummyApp;
 }
