@@ -5,7 +5,7 @@ if (!APS_CLIENT_ID || !APS_CLIENT_SECRET) {
     console.warn('Missing some of the environment variables.');
     process.exit(1);
 }
-APS_BUCKET = APS_BUCKET || `${APS_CLIENT_ID.toLowerCase()}-skripsi-2025`;
+APS_BUCKET = APS_BUCKET || `${APS_CLIENT_ID.toLowerCase()}-newskripsi-2025`;
 PORT = PORT || 8080;
 
 module.exports = {
