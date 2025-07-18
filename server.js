@@ -5,4 +5,12 @@ let app = express();
 app.use(express.static('wwwroot'));
 app.use(require('./routes/auth.js'));
 app.use(require('./routes/models.js'));
-app.listen(PORT, function () { console.log(`Server listening on port ${'http://localhost:8080'}...`); });
+
+// Get port from environment or use config
+const port = process.env.PORT || PORT;
+app.listen(port, function () { 
+    console.log(`Server listening on port ${port}...`); 
+});
+
+// Export for Vercel
+module.exports = app;
