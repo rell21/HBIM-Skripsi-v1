@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "wwwroot",
   "version": 2,
   "builds": [
     {
