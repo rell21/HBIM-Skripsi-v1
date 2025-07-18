@@ -1,0 +1,21 @@
+{
+  "name": "test_v2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aps_sdk/authentication": "^1.0.0",
+    "@aps_sdk/model-derivative": "^1.1.0",
+    "@aps_sdk/oss": "^1.1.1",
+    "@types/forge-viewer": "^7.99.1",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-formidable": "^1.2.0"
+  }
+}

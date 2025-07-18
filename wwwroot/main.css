@@ -1,0 +1,158 @@
+/* main.css */
+
+/* Mengatur font global */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5; /* Warna latar belakang lembut */
+    color: #333;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between; /* Memisahkan konten kiri dan kanan */
+    align-items: center;
+    background-color: #ffffff; /* Latar belakang header putih */
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan lembut untuk efek "mengambang" */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-left .logo {
+    height: 40px; /* Ukuran logo yang lebih proporsional */
+    margin-right: 15px;
+    border-radius: 50%; /* Membuat logo bulat jika memungkinkan */
+    box-shadow: 0 0 8px rgba(0,0,0,0.1); /* Bayangan pada logo */
+}
+
+.header-left .title {
+    font-size: 1.6em;
+    font-weight: 600; /* Lebih tebal untuk judul utama */
+    color: #2c3e50;
+    margin-right: 10px; /* Sedikit spasi antara judul dan subjudul */
+}
+
+.header-left .subtitle {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    font-weight: 300;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Memberi jarak antar elemen di sisi kanan */
+}
+
+#models {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    min-width: 150px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#models:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+#upload {
+    background-color: #3498db; /* Warna biru menarik */
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#upload:hover {
+    background-color: #2980b9; /* Warna lebih gelap saat hover */
+    transform: translateY(-1px); /* Efek sedikit terangkat */
+}
+
+#upload:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+#preview {
+    width: 100%;
+    height: calc(100vh - 60px); /* Sesuaikan tinggi agar tidak tumpang tindih dengan header */
+    background-color: #ecf0f1;
+    overflow: hidden;
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Overlay semi-transparan untuk loading atau modal */
+    display: none; /* Sembunyikan secara default, tampilkan dengan JavaScript */
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.5em;
+    z-index: 2000;
+}
+
+/* Responsif dasar */
+@media (max-width: 768px) {
+    #header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .header-left, .header-right {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .header-right {
+        margin-bottom: 0;
+    }
+
+    .header-left .logo {
+        height: 35px;
+    }
+
+    .header-left .title {
+        font-size: 1.4em;
+    }
+
+    #preview {
+        height: calc(100vh - 120px); /* Sesuaikan lagi untuk header yang lebih tinggi */
+    }
+}
+
+@media (max-width: 480px) {
+    .header-left .title {
+        font-size: 1.2em;
+    }
+    .header-left .subtitle {
+        font-size: 0.8em;
+    }
+    #models, #upload {
+        font-size: 0.9em;
+        padding: 6px 12px;
+    }
+}
